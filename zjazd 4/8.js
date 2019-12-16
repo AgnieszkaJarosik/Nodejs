@@ -13,14 +13,16 @@ const getWeather = (lat, lng) => {
 
 const writeToFile = weather => {
   const jsonWeather = JSON.stringify(weather);
-  fs.writeFile('./weather.json', jsonWeather, (err)=> {
-    if(err) {
-      console.log(err);
-    } else {
-      console.log('Zapisano do pliku');
-    }
-  })
-}
+  return new Promise((res, rej) => {
+    fs.writeFile("./weather.json", jsonWeather, err => {
+      if (err) {
+        rej(err);
+      } else {
+        res("Zapisano do pliku");
+      }
+    });
+  });
+};
 
 getUser(2)
   .then(response => {
@@ -28,8 +30,9 @@ getUser(2)
     return getWeather(geo.lat, geo.lng);
   })
   .then(response => {
-    writeToFile(response.data);
+    return writeToFile(response.data);
   })
+  .then(text => console.log(text))
   .catch(error => {
     console.log(error);
   });

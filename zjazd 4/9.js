@@ -15,7 +15,8 @@ const getWeather = (lat, lng) => {
 const writeWeather = weather => {
   const writeFile = util.promisify(fs.writeFile);
   const jsonWeather = JSON.stringify(weather);
-  writeFile("weather.json", jsonWeather);
+  return writeFile("weather.json", jsonWeather)
+    .then( () => "Zapisano do pliku");
 };
 
 getUser(2)
@@ -27,7 +28,7 @@ getUser(2)
     return writeWeather(response.data);
   })
   .then((data) => {
-    console.log("Zapisano do pliku");
+    console.log(data);
   })
   .catch(error => {
     console.log(error);

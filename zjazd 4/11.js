@@ -1,72 +1,56 @@
-const axios = require("axios");
 const fs = require("fs");
 const util = require("util");
+const axios = require("axios");
 
-let fileName = '';
-
-const getUser = () => {
-  const url = ` https://jsonplaceholder.typicode.com/users/1`;
+const getUser = id => {
+  const url = ` https://jsonplaceholder.typicode.com/users/${id}`;
   return axios.get(url);
 };
 
-const logUser = (response) => {
-  console.log(response.data.name);
-}
-
-const getAlbum = () => {
-  const url = `https://jsonplaceholder.typicode.com/albums?userId=1`;
+const getAlbum = id => {
+  const url = `https://jsonplaceholder.typicode.com/albums?userId=${id}`;
   return axios.get(url);
 }
 
-const logAlbums = (response) => {
-  console.log(`Ilość albumów: ${response.data.length}, 
-Tytuł pierwszego albumu: ${response.data[0].title}`);
-      return response.data[0].title;
-}
-
-const setFilename = (title) => {
-  title = title.replace(/\s+/g, ''); //RegExp
+const setFilename = title => {
+  title = title.replace(/\s+/g, '');
   title.length >10 ? fileName = title.slice(0,9) + '.txt' : fileName = title + '.txt';
 }
 
-const getPhoto = () => {
-  const url = `https://jsonplaceholder.typicode.com/photos?albumId=1`;
-  return axios.get(url);
+const logAlbum = response => {
+  const [{id, title}] = response.data;
+  console.log(`Ilość albumów: ${response.data.length}, 
+Tytuł pierwszego albumu: ${title}`);
+  setFilename(title);
+  return id;
 }
 
-const logPhoto = (response) => {
-  const photos = [];
-  console.log(`Tytuły zdjęć:`);
-  response.data.forEach( (photo, i) => {
-    console.log(`${i+1} - ${photo.title}`);
-    photos.push(photo.title);
-  });
-  return photos;
+const getPhotos = id => {
+  const url = `https://jsonplaceholder.typicode.com/photos?albumId=${id}`;
+  return axios.get(url);
 }
 
 const writeToFile = ( fileName, data ) => {
   const writeFile = util.promisify(fs.writeFile);
   const jsonData = JSON.stringify(data);
-  writeFile(fileName, jsonData);
-  return fileName;
+  return writeFile(fileName, jsonData)
+  .then( () => "Zapisano do pliku");
 };
 
-const logSaveInfo = (fileName) => {
-  console.log(`Zapisano do pliku ${fileName}`)
-}
+const errorHandler = err => console.log("ERROR:  " + err.message);
 
-const errorHandler = (err) => {
-  console.log("ERROR");
-  console.log(err);
-}
-
-getUser()
-  .then( logUser )
-  .then( getAlbum )
-  .then( logAlbums )
-  .then( setFilename )
-  .then( getPhoto )
-  .then( logPhoto )
-  .then( photos => writeToFile(fileName, photos))
-  .then( logSaveInfo )
+getUser(3)
+  .then( response => {
+    const {id, name} = response.data;
+    console.log(name);
+    return getAlbum(id);
+  })
+  .then( logAlbum )
+  .then( id => getPhotos(id) )
+  .then( response => {
+    console.log(`Tytuły zdjęć:`);
+    response.data.forEach( (photo, i) => console.log(`${i+1} - ${photo.title}`));
+    return writeToFile(fileName, response.data);
+  })
+  .then(data => console.log(data))
   .catch( errorHandler );
