@@ -3,7 +3,7 @@ const chalk = require('chalk');
 module.exports = {
   logSentence: (text, author) => {
     console.log(chalk`
-{yellowBright.italic "${text}"} {green - ${author}}`);  
+{yellowBright.underline "${text}"} {green - ${author}}`);  
   },
 
   logCagegory: (category) => {

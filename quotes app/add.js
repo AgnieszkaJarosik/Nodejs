@@ -6,9 +6,7 @@ const { Quote } = require("./quote");
 const addQuoteHandler = async () => {
   try {
     let quotes = await readFile("quotes.json");
-    const {
-      _: [, text, author, cat]
-    } = argv;
+    const { _: [, text, author, cat] } = argv;
     let id = null;
 
     if (quotes) {
@@ -35,6 +33,6 @@ const addQuoteHandler = async () => {
 
 module.exports = {
   command: "add <quote> <author> [category]",
-  desc: "Dodaj nowy cytat do bazy <cytat> <autor> [kategoria]",
+  desc: "Dodaj nowy cytat do bazy",
   handler: addQuoteHandler
 };

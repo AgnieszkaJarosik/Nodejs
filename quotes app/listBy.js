@@ -5,9 +5,7 @@ const { logSentence, logCagegory } = require("./logSentence");
 const getQuoteByHandler = async () => {
   try {
     const quotes = await readFile("quotes.json");
-    const {
-      _: [, category]
-    } = argv;
+    const { _: [, category] } = argv;
     const cat = category.toUpperCase();
     if (Array.isArray(quotes)) {
       const quotesByCat = quotes.filter(quote => {
@@ -17,7 +15,7 @@ const getQuoteByHandler = async () => {
       });
       if (Array.isArray(quotesByCat)) {
         logCagegory(category);
-        quotesByCat.forEach(quote => logSentence(quote.text, quote.author));
+        quotesByCat.forEach( quote => logSentence( quote.text, quote.author ));
       } else {
         throw new Error("Nie znaleziono cytatów w tej kategorii");
       }
@@ -31,6 +29,6 @@ const getQuoteByHandler = async () => {
 
 module.exports = {
   command: "listBy <category>",
-  desc: "Wyświetl cytaty z danej kategorii: <motywujące>, <filozoficzne>",
+  desc: "Wyświetl cytaty z danej kategorii",
   handler: getQuoteByHandler
 };

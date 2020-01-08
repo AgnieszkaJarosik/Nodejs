@@ -26,6 +26,6 @@ const removeHandler = async () => {
 
 module.exports = {
   command: "remove <id>",
-  desc: "Usuń z bazy cytat o podanym <id>",
+  desc: "Usuń z bazy cytat o podanym id",
   handler: removeHandler
 };
