@@ -1,11 +1,9 @@
-const argv = require("yargs").argv;
 const { readFile } = require("./readFile");
 const { logSentence, logCagegory } = require("./logSentence");
 
-const getQuoteByHandler = async () => {
+const getQuoteByHandler = async ( {category} ) => {
   try {
     const quotes = await readFile("quotes.json");
-    const { _: [, category] } = argv;
     const cat = category.toUpperCase();
     if (Array.isArray(quotes)) {
       const quotesByCat = quotes.filter(quote => {

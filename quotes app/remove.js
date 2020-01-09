@@ -1,10 +1,8 @@
-const argv = require("yargs").argv;
 const { readFile } = require("./readFile");
 const { writeFile } = require("./writeFile");
 
-const removeHandler = async () => {
+const removeHandler = async ( {id} ) => {
   try {
-    const { _: [, id] } = argv;
     const quotes = await readFile("quotes.json");
     if (quotes) {
       let index = quotes.map(quote => quote.id).indexOf(id);

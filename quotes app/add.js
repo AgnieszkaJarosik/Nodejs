@@ -1,12 +1,10 @@
-const argv = require("yargs").argv;
 const { readFile } = require("./readFile");
 const { writeFile } = require("./writeFile");
 const { Quote } = require("./quote");
 
-const addQuoteHandler = async () => {
+const addQuoteHandler = async ( {quote, author, category} ) => {
   try {
     let quotes = await readFile("quotes.json");
-    const { _: [, text, author, cat] } = argv;
     let id = null;
 
     if (quotes) {
@@ -16,9 +14,9 @@ const addQuoteHandler = async () => {
       id = 1;
     }
 
-    if (typeof text === "string" && text !== "") {
-      const quote = new Quote(id, text, author, cat);
-      quotes.push(quote);
+    if (typeof quote === "string" && quote !== "") {
+      const newQuote = new Quote(id, quote, author, category);
+      quotes.push(newQuote);
     } else {
       throw new Error("Nie podano cytatu!");
     }
