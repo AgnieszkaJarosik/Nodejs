@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { logSentence } = require("./logSentence");
+const { logSentence } = require("./utils/logSentence");
 
 const getQuote = async () => {
   const url = `http://ec2-18-217-240-10.us-east-2.compute.amazonaws.com/node/quotes.php`;
@@ -11,7 +11,7 @@ const fetchHandler = async () => {
   try {
     const fetchQuote = await getQuote();
     const { quote, author } = fetchQuote;
-    logSentence(quote, author);
+    logSentence('', quote, author);
   } catch (err) {
     console.log(err.message);
   }

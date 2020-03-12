@@ -2,6 +2,8 @@ const fs = require("fs");
 const util = require("util");
 const axios = require("axios");
 
+let fileName = '';
+
 const getUser = id => {
   const url = ` https://jsonplaceholder.typicode.com/users/${id}`;
   return axios.get(url);

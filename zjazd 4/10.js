@@ -1,41 +1,46 @@
 const axios = require("axios");
 
-const getUser = id => {
-  const url = ` https://jsonplaceholder.typicode.com/users/${id}`;
+const getUser = () => {
+  const url = ` https://jsonplaceholder.typicode.com/users/1`;
   return axios.get(url);
 };
 
-const getAlbum = id => {
-  const url = `https://jsonplaceholder.typicode.com/albums?userId=${id}`;
+const logUser = (response) => {
+  console.log(response.data.name);
+}
+
+const getAlbum = () => {
+  const url = `https://jsonplaceholder.typicode.com/albums?userId=1`;
   return axios.get(url);
 }
 
-const logAlbum = response => {
-  const [{id, title}] = response.data;
+const logAlbums = (response) => {
   console.log(`Ilość albumów: ${response.data.length}, 
-Tytuł pierwszego albumu: ${title}`);
-  return id;
+Tytuł pierwszego albumu: ${response.data[0].title}`);
+      return response.data[0].title;
 }
 
-const getPhotos = id => {
-  const url = `https://jsonplaceholder.typicode.com/photos?albumId=${id}`;
+const getPhoto = () => {
+  const url = `https://jsonplaceholder.typicode.com/photos?albumId=1`;
   return axios.get(url);
 }
 
-const logPhotos = response => {
+const logPhoto = (response) => {
   console.log(`Tytuły zdjęć:`);
-  response.data.forEach( (photo, i) => console.log(`${i+1} - ${photo.title}`));
+  response.data.forEach( (photo, i) => {
+    console.log(`${i+1} - ${photo.title}`);
+  })
 }
 
-const errorHandler = err => console.log("ERROR:  " + err.message);
+const errorHandler = (err) => {
+  console.log("ERROR");
+  console.log(err);
+}
 
-getUser(3)
-  .then( response => {
-    const {id, name} = response.data;
-    console.log(name);
-    return getAlbum(id);
-  })
-  .then( logAlbum )
-  .then( id => getPhotos(id) )
-  .then( logPhotos )
+getUser()
+  .then( logUser )
+  .then( getAlbum )
+  .then( logAlbums )
+  .then( getPhoto )
+  .then( logPhoto )
   .catch( errorHandler );

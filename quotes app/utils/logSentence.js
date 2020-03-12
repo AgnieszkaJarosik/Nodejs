@@ -1,9 +1,9 @@
 const chalk = require('chalk');
 
 module.exports = {
-  logSentence: (text, author) => {
+  logSentence: (id='', text, author) => {
     console.log(chalk`
-{yellowBright.underline "${text}"} {green - ${author}}`);  
+${id} {yellowBright "${text}"} {green - ${author}}`);  
   },
 
   logCagegory: (category) => {

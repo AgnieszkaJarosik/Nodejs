@@ -1,6 +1,6 @@
 module.exports = {
   Quote: class Quote {
-    constructor(id, text, author='anonim', category='') {
+    constructor(id, text, author, category='Inne') {
       this.id = id;
       this.text = text;
       this.author = author;

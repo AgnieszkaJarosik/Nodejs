@@ -1,10 +1,10 @@
-const { readFile } = require("./readFile");
-const { logSentence, logCagegory } = require("./logSentence");
+const { readFile } = require("./utils/readFile");
+const { logSentence, logCagegory } = require("./utils/logSentence");
 
 const getQuoteHandler = async () => {
   try {
-    const quotes = await readFile("quotes.json");
-    if(Array.isArray(quotes)){
+    const quotes = await readFile();
+    if(quotes.length > 0){
       const quotesByCategory = quotes.reduce((acc, curr) => {
         if (Array.isArray(acc[curr.category])) {
           acc[curr.category].push(curr);
@@ -14,10 +14,10 @@ const getQuoteHandler = async () => {
         return acc;
       }, {});
       Object.keys(quotesByCategory).map( category => {
-        category === '' ? logCagegory('Inne') : logCagegory(category);
+        logCagegory(category);
         quotesByCategory[category].map( quote => {
-          const { text, author } = quote;
-          logSentence(text, author);
+          const { id, text, author } = quote;
+          logSentence(id, text, author);
         });
       });
     } else {
